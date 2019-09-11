@@ -2,10 +2,10 @@ ENV SHELL=/bin/bash
 RUN apk add --update --no-cache ${BUILD_DEPS} ${PACKAGES} && pip install ${PIP_INSTALL_ARGS} "molecule[${MOLECULE_EXTRAS}]" && gem install ${GEM_PACKAGES} && apk del --no-cache ${BUILD_DEPS} && rm -rf /root/.cache
 COPY dir:9f4975397fa3c26f770283b9010eef8354bf7182026824dcb2c8ce007c2734d5 in /usr/src/molecule/dist
 ENV MOLECULE_EXTRAS=azure,docker,docs,ec2,gce,hetznercloud,linode,lxc,openstack,vagrant,windows
-ENV GEM_PACKAGES= rubocop json etc
-ENV PIP_INSTALL_ARGS= --only-binary :all: --no-index -f /usr/src/molecule/dist
-ENV BUILD_DEPS= gcc libc-dev make ruby-dev ruby-rdoc
-ENV PACKAGES= docker git openssh-client ruby
+ENV GEM_PACKAGES=rubocop json etc
+ENV PIP_INSTALL_ARGS=--only-binary :all: --no-index -f /usr/src/molecule/dist
+ENV BUILD_DEPS=gcc libc-dev make ruby-dev ruby-rdoc
+ENV PACKAGES=docker git openssh-client ruby
 LABEL maintainer=Ansible <info@ansible.com>
 CMD ["python3"]
 RUN set -ex; wget -O get-pip.py "$PYTHON_GET_PIP_URL"; echo "$PYTHON_GET_PIP_SHA256 *get-pip.py" | sha256sum -c -; python get-pip.py --disable-pip-version-check --no-cache-dir "pip==$PYTHON_PIP_VERSION" ; pip --version; find /usr/local -depth \( \( -type d -a \( -name test -o -name tests \) \) -o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' \) \) \) -exec rm -rf '{}' +; rm -f get-pip.py
